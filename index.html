@@ -40,8 +40,8 @@ canvas {
 
 <div id="content">
   <h1>Gefeliciteerd Doctor Sinjorgo!</h1>
-  <h1 id="questionText">
-  <em>Loading question...</em>
+<h1 id="questionText" style="font-style: italic;">
+  Loading question...
 </h1>
   <p id="answerText"></p>
   <div id="controls" style="display:none;">
@@ -102,7 +102,9 @@ const answerText = document.getElementById("answerText");
 const controls = document.getElementById("controls");
 
 // Track indices
+let currentQuestionIndex = 0;
 let currentPersonIndex = 0;
+
 
 // Confetti
 function launchConfetti() {
@@ -159,6 +161,7 @@ playCurrent();
 
 </body>
 </html>
+
 
 
 
