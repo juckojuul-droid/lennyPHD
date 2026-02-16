@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Congratulations Doctor!</title>
+<title>PhD Answers</title>
 <style>
 body {
   margin:0;
@@ -20,11 +20,12 @@ body {
   z-index:2;
 }
 button {
-  padding:15px 25px;
-  font-size:18px;
+  padding:12px 20px;
+  font-size:16px;
   border:none;
-  border-radius:8px;
+  border-radius:6px;
   cursor:pointer;
+  margin:5px;
 }
 canvas {
   position:fixed;
@@ -38,8 +39,14 @@ canvas {
 <body>
 
 <div id="content">
-  <h1>Congratulations, Doctor!</h1>
-  <p id="message">Preparing your surprise...</p>
+  <h1>PhD Feedback</h1>
+  <p id="questionText">Loading question...</p>
+  <p id="answerText"></p>
+  <div id="controls" style="display:none;">
+    <button onclick="repeatAudio()">🔁 Repeat Answer</button>
+    <button onclick="nextAnswer()">⏭ Next Answer</button>
+    <button onclick="nextQuestion()">➡ Next Question</button>
+  </div>
 </div>
 
 <audio id="player" playsinline></audio>
@@ -48,62 +55,101 @@ canvas {
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-const files = [
-  "audio1.mp3",
-  "audio2.mp3",
-  "audio3.mp3",
-  "audio4.mp3",
-  "audio5.mp3",
-  "audio6.mp3",
-  "audio7.mp3",
-  "audio8.mp3",
-  "audio9.mp3",
-  "audio10.mp3"
+// Data structure: 5 questions, each with 10 answers
+const questions = [
+  {
+    text: "What did you think of his PhD defense?",
+    answers: [
+      { audio: "q1_person1.mp3", text: "Robbie" },
+      { audio: "q1_person2.mp3", text: "Robbie" },
+      { audio: "q1_person3.mp3", text: "Robbie" },
+      { audio: "q1_person4.mp3", text: "Robbie" },
+      { audio: "q1_person5.mp3", text: "Robbie" },
+      { audio: "q1_person6.mp3", text: "Robbie" },
+      { audio: "q1_person7.mp3", text: "Robbie" },
+      { audio: "q1_person8.mp3", text: "Robbie" },
+      { audio: "q1_person9.mp3", text: "Robbie" },
+      { audio: "q1_person10.mp3", text: "Robbie" }
+    ]
+  },
+  {
+    text: "How did you find his research topic?",
+    answers: [
+      { audio: "q2_person1.mp3", text: "Jucko" },
+      { audio: "q2_person2.mp3", text: "Jucko" },
+      { audio: "q2_person3.mp3", text: "Jucko" },
+      { audio: "q2_person4.mp3", text: "Jucko" },
+      { audio: "q2_person5.mp3", text: "Jucko" },
+      { audio: "q2_person6.mp3", text: "Jucko" },
+      { audio: "q2_person7.mp3", text: "Jucko" },
+      { audio: "q2_person8.mp3", text: "Jucko" },
+      { audio: "q2_person9.mp3", text: "Jucko" },
+      { audio: "q2_person10.mp3", text: "Jucko" }
+    ]
+  },
+  // Add questions 3,4,5 similarly...
 ];
 
-const randomFile = files[Math.floor(Math.random() * files.length)];
+// DOM elements
 const player = document.getElementById("player");
-player.src = randomFile;
+const questionText = document.getElementById("questionText");
+const answerText = document.getElementById("answerText");
+const controls = document.getElementById("controls");
 
+// Track indices
+let currentQuestionIndex = Math.floor(Math.random() * questions.length);
+let currentPersonIndex = 0;
+
+// Confetti
 function launchConfetti() {
-  const duration = 3 * 1000;
+  const duration = 2*1000;
   const end = Date.now() + duration;
-
   (function frame() {
-    confetti({
-      particleCount: 5,
-      angle: 60,
-      spread: 55,
-      origin: { x: 0 }
-    });
-    confetti({
-      particleCount: 5,
-      angle: 120,
-      spread: 55,
-      origin: { x: 1 }
-    });
-
-    if (Date.now() < end) {
-      requestAnimationFrame(frame);
-    }
+    confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+    confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+    if (Date.now() < end) requestAnimationFrame(frame);
   }());
 }
 
-player.play().then(() => {
-  document.getElementById("message").innerHTML = "🎉 Playing your surprise!";
-  launchConfetti();
-}).catch(() => {
-  document.getElementById("message").innerHTML =
-  "<button onclick='startAudio()'>Tap to Celebrate 🎉</button>";
-});
+// Play current answer
+function playCurrent() {
+  const currentAnswer = questions[currentQuestionIndex].answers[currentPersonIndex];
+  player.src = currentAnswer.audio;
+  questionText.textContent = questions[currentQuestionIndex].text;
+  answerText.textContent = currentAnswer.text;
+  controls.style.display = "block";
+  player.play().then(launchConfetti).catch(() => {
+    questionText.innerHTML = "<button onclick='playCurrent()'>Tap to Play</button>";
+  });
+}
 
-function startAudio() {
+// Repeat current answer
+function repeatAudio() {
+  player.currentTime = 0;
   player.play();
   launchConfetti();
-  document.getElementById("message").innerHTML = "🎉 Playing your surprise!";
 }
+
+// Next answer
+function nextAnswer() {
+  currentPersonIndex = (currentPersonIndex + 1) % questions[currentQuestionIndex].answers.length;
+  playCurrent();
+}
+
+// Next question
+function nextQuestion() {
+  let nextQuestionIndex;
+  do {
+    nextQuestionIndex = Math.floor(Math.random() * questions.length);
+  } while (nextQuestionIndex === currentQuestionIndex);
+  currentQuestionIndex = nextQuestionIndex;
+  currentPersonIndex = 0;
+  playCurrent();
+}
+
+// Initial load
+playCurrent();
 </script>
 
 </body>
 </html>
-
