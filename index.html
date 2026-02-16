@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Congratulations Doctor!</title>
+<style>
+body {
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#4e73df,#1cc88a);
+  color:white;
+  text-align:center;
+  overflow:hidden;
+}
+#content {
+  z-index:2;
+}
+button {
+  padding:15px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+canvas {
+  position:fixed;
+  top:0;
+  left:0;
+  pointer-events:none;
+  z-index:1;
+}
+</style>
+</head>
+<body>
+
+<div id="content">
+  <h1>🎓 Congratulations, Doctor!</h1>
+  <p id="message">Preparing your surprise...</p>
+</div>
+
+<audio id="player" playsinline></audio>
+<canvas id="confetti"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+const files = [
+  "audio1.mp3",
+  "audio2.mp3",
+  "audio3.mp3",
+  "audio4.mp3",
+  "audio5.mp3",
+  "audio6.mp3",
+  "audio7.mp3",
+  "audio8.mp3",
+  "audio9.mp3",
+  "audio10.mp3"
+];
+
+const randomFile = files[Math.floor(Math.random() * files.length)];
+const player = document.getElementById("player");
+player.src = randomFile;
+
+function launchConfetti() {
+  const duration = 3 * 1000;
+  const end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 5,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 }
+    });
+    confetti({
+      particleCount: 5,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 }
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+}
+
+player.play().then(() => {
+  document.getElementById("message").innerHTML = "🎉 Playing your surprise!";
+  launchConfetti();
+}).catch(() => {
+  document.getElementById("message").innerHTML =
+  "<button onclick='startAudio()'>Tap to Celebrate 🎉</button>";
+});
+
+function startAudio() {
+  player.play();
+  launchConfetti();
+  document.getElementById("message").innerHTML = "🎉 Playing your surprise!";
+}
+</script>
+
+</body>
+</html>
