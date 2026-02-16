@@ -40,12 +40,14 @@ canvas {
 
 <div id="content">
   <h1>Gefeliciteerd Doctor Sinjorgo!</h1>
-  <h1 id="questionText">Loading question...</h1>
+  <h1 id="questionText" style="font-style: italic;">
+  Loading question...
+</h1>
   <p id="answerText"></p>
   <div id="controls" style="display:none;">
-    <button onclick="repeatAudio()">🔁 Repeat Answer</button>
-    <button onclick="nextAnswer()">⏭ Next Answer</button>
-    <button onclick="nextQuestion()">➡ Next Question</button>
+    <button onclick="repeatAudio()">🔁 Herhaal antwoord</button>
+    <button onclick="nextAnswer()">⏭ Volgende persoon</button>
+    <button onclick="nextQuestion()">➡ Volgende vraag</button>
   </div>
 </div>
 
@@ -64,7 +66,7 @@ const questions = [
     ]
   },
   {
-    text: "Wat doet Lennart voor werk over 25 jaar??",
+    text: "Wat doet Lennart voor werk over 25 jaar?",
     answers: [
       { audio: "robbie_q2.ogg", text: "Robbie" },
 
@@ -100,7 +102,6 @@ const answerText = document.getElementById("answerText");
 const controls = document.getElementById("controls");
 
 // Track indices
-let currentQuestionIndex = Math.floor(Math.random() * questions.length);
 let currentPersonIndex = 0;
 
 // Confetti
@@ -141,14 +142,16 @@ function nextAnswer() {
 
 // Next question
 function nextQuestion() {
-  let nextQuestionIndex;
-  do {
-    nextQuestionIndex = Math.floor(Math.random() * questions.length);
-  } while (nextQuestionIndex === currentQuestionIndex);
-  currentQuestionIndex = nextQuestionIndex;
+  currentQuestionIndex++;
+
+  if (currentQuestionIndex >= questions.length) {
+    currentQuestionIndex = 0; // loop back to start
+  }
+
   currentPersonIndex = 0;
   playCurrent();
 }
+
 
 // Initial load
 playCurrent();
@@ -156,6 +159,7 @@ playCurrent();
 
 </body>
 </html>
+
 
 
 
