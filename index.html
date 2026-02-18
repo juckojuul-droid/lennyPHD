@@ -10,23 +10,53 @@ body {
   display:flex;
   justify-content:center;
   align-items:center;
-  font-family:sans-serif;
-  background:linear-gradient(135deg,#4e73df,#1cc88a);
-  color:white;
+  font-family:'Poppins', sans-serif;
+  background: linear-gradient(135deg, #4e73df, #1cc88a);
+  color: white;
   text-align:center;
   overflow:hidden;
+  animation: gradientShift 10s ease infinite alternate;
 }
+
+@keyframes gradientShift {
+  0% { background: linear-gradient(135deg, #4e73df, #1cc88a); }
+  50% { background: linear-gradient(135deg, #1cc88a, #f6c23e); }
+  100% { background: linear-gradient(135deg, #f6c23e, #4e73df); }
+}
+
 #content {
   z-index:2;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px 60px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
 }
+
+#content:hover {
+  transform: scale(1.05);
+}
+
 button {
-  padding:12px 20px;
-  font-size:16px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  margin:5px;
+  padding: 14px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 5px;
+  background: linear-gradient(90deg, #1cc88a, #4e73df);
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
 }
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
 canvas {
   position:fixed;
   top:0;
@@ -173,13 +203,24 @@ function launchConfetti() {
 function playCurrent() {
   const currentAnswer = questions[currentQuestionIndex].answers[currentPersonIndex];
   player.src = currentAnswer.audio;
+  
   questionText.textContent = questions[currentQuestionIndex].text;
   answerText.textContent = currentAnswer.text;
+
+  // Add animation class
+  questionText.classList.remove('showText');
+  answerText.classList.remove('showText');
+  setTimeout(() => {
+    questionText.classList.add('showText');
+    answerText.classList.add('showText');
+  }, 50);
+
   controls.style.display = "block";
   player.play().then(launchConfetti).catch(() => {
     questionText.innerHTML = "<button onclick='playCurrent()'>Tap to Play</button>";
   });
 }
+
 
 // Repeat current answer
 function repeatAudio() {
@@ -213,6 +254,7 @@ playCurrent();
 
 </body>
 </html>
+
 
 
 
