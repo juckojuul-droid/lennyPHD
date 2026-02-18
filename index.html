@@ -63,7 +63,14 @@ const questions = [
     text: "Waar denk je dat Lennarts PHD over gaat?",
     answers: [
       { audio: "robbie_q1.ogg", text: "Robbie" },
+      { audio: "biden_q1.mp3", text: "Joe Biden" },
       { audio: "Jan-q1.ogg", text: "Jantje" },
+      { audio: "david_q1.mp3", text: "David Attenborough" },
+      { audio: "snape_q1.mp3", text: "Severus Snape" },
+      { audio: "stephen_q1.wav", text: "Stephen Hawking" },
+      { audio: "rock_q1.mp3", text: "Dwayne, the Rock, Johnson" },
+      { audio: "trump_q1.mp3", text: "Donald J. Trump" },
+
     ]
   },
   {
@@ -71,6 +78,16 @@ const questions = [
     answers: [
       { audio: "robbie_q2.ogg", text: "Robbie" },
       { audio: "Jan-q2.ogg", text: "Jantje" },
+      { audio: "biden_q2.mp3", text: "Joe Biden" },
+      { audio: "david_q2.mp3", text: "David Attenborough" },
+      { audio: "snape_q2.mp3", text: "Severus Snape" },
+      { audio: "stephen_q2.wav", text: "Stephen Hawking" },
+      { audio: "rock_q2.mp3", text: "Dwayne, the Rock, Johnson" },
+      { audio: "trump_q2.mp3", text: "Donald J. Trump" },
+
+
+      
+
 
     ]
   },
@@ -79,6 +96,12 @@ const questions = [
     answers: [
       { audio: "robbie_q3.ogg", text: "Robbie" },
       { audio: "Jan-q3.ogg", text: "Jantje" },
+      { audio: "biden_q3.mp3", text: "Joe Biden" },
+      { audio: "david_q3.mp3", text: "David Attenborough" },
+      { audio: "snape_q3.mp3", text: "Severus Snape" },
+      { audio: "stephen_q3.wav", text: "Stephen Hawking" },
+      { audio: "rock_q3.mp3", text: "Dwayne, the Rock, Johnson" },
+      { audio: "trump_q3.mp3", text: "Donald J. Trump" },
 
     ]
   },
@@ -87,7 +110,12 @@ const questions = [
     answers: [
       { audio: "robbie_q4.ogg", text: "Robbie" },
       { audio: "Jan-q4.ogg", text: "Jantje" },
-
+      { audio: "biden_q4.mp3", text: "Joe Biden" },
+      { audio: "david_q4.mp3", text: "David Attenborough" },
+      { audio: "snape_q4.mp3", text: "Severus Snape" },
+      { audio: "stephen_q4.wav", text: "Stephen Hawking" },
+      { audio: "rock_q4.mp3", text: "Dwayne, the Rock, Johnson" },
+       audio: "trump_q4.mp3", text: "Donald J. Trump" },
     ]
   },
   {
@@ -95,11 +123,30 @@ const questions = [
     answers: [
       { audio: "robbie_q5.ogg", text: "Robbie" },
       { audio: "Jan-q5.ogg", text: "Jantje" },
+      { audio: "biden_q5.mp3", text: "Joe Biden" },
+      { audio: "david_q5.mp3", text: "David Attenborough" },
+      { audio: "snape_q5.mp3", text: "Severus Snape" },
+      { audio: "stephen_q5.wav", text: "Stephen Hawking" },
+      { audio: "rock_q5.mp3", text: "Dwayne, the Rock, Johnson" },
+       audio: "trump_q5.mp3", text: "Donald J. Trump" },
+
+      
 
     ]
   }
 ];
 
+// Shuffle answers so order is random
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+questions.forEach(q => shuffleArray(q.answers));
+
+  
 // DOM elements
 const player = document.getElementById("player");
 const questionText = document.getElementById("questionText");
@@ -166,6 +213,7 @@ playCurrent();
 
 </body>
 </html>
+
 
 
 
