@@ -285,10 +285,6 @@ function playCurrent() {
   answerText.textContent = currentAnswer.text;
   controls.style.display = "block";
 
-  // 🔥 Trigger fade animation
-  content.classList.remove("fadeIn");
-  void content.offsetWidth; // forces reflow so animation can restart
-  content.classList.add("fadeIn");
 
   // ✨ Glow effect while audio plays
   player.onplay = () => {
@@ -330,6 +326,12 @@ function nextQuestion() {
   }
 
   currentPersonIndex = 0;
+
+  // 🔥 Trigger fade animation
+  content.classList.remove("fadeIn");
+  void content.offsetWidth; // forces reflow so animation can restart
+  content.classList.add("fadeIn");
+  
   playCurrent();
 }
 
@@ -341,6 +343,7 @@ playCurrent();
 
 </body>
 </html>
+
 
 
 
